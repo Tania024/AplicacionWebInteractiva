@@ -1,0 +1,55 @@
+<section id="home">
+    <h2>Bienvenidos a nuestros cursos </h2>
+    <p>Aqui encontraras una alta gama de cursos para todo tipo ¡Empieza ya!</p>
+    <p>Que esperas para cambiar tu nivel de apendizaje </p>
+</section>
+
+<article id="contenido">
+    <input type="text" id="buscarCursos" [(ngModel)]="filtro" (input)="buscarCursos()" placeholder="Buscar cursos" />
+    <h2>Lista de Cursos</h2>
+      
+      
+      
+      
+      <div id="listaCursos">
+        <div *ngFor="let curso of cursos; let i = index">
+          <h3>{{ curso.nombreCurso }}</h3>
+          <p><strong>Instructor:</strong> {{ curso.nombreInstructor }}</p>
+          <p><strong>Fecha de Inicio:</strong> {{ curso.fechaInicio }}</p>
+          <p><strong>Duración:</strong> {{ curso.duracion }}</p>
+          <button class="btnDetalles" (click)="toggleDetalles(i)" id="btnDetalles-{{ i }}">Ver más detalles</button>
+          <button class="btnEditar" (click)="editarCurso(i)">Editar</button>
+          <button class="btnEliminar" (click)="eliminarCurso(i)">Eliminar</button>
+          <div id="detalles-{{ i }}" class="detalles" style="display: none;">
+            <p><strong>Descripción:</strong> {{ curso.descripcion }}</p>
+          </div>
+          <hr />
+        </div>
+        <p *ngIf="cursos.length === 0">No se encontraron cursos.</p>
+      </div>
+      
+      
+      
+</article>
+
+<section id="agregarCursos">
+    <h2>Agregar Curso</h2>
+    <form (ngSubmit)="enviarFormulario($event)" autocomplete="off">
+        <label for="cname"><strong>Nombre curso: </strong></label><br>
+        <input type="text" [(ngModel)]="nuevoCurso.nombreCurso" name="cname" placeholder="Nombre del Curso" /><br>
+        
+        <label for="iname"><strong>Nombre del instructor: </strong></label><br>
+        <input type="text" [(ngModel)]="nuevoCurso.nombreInstructor" name="iname" placeholder="Nombre del Instructor"  /><br>
+        
+        <label for="fecha"><strong>Fecha de inicio: </strong></label><br>
+        <input type="date" [(ngModel)]="nuevoCurso.fechaInicio" name="fecha"  /><br>
+        
+        <label for="duracion"><strong>Duración: </strong></label><br>
+        <input type="text" [(ngModel)]="nuevoCurso.duracion" name="duracion" placeholder="Duración"  /><br>
+        
+        <label for="descripcion"><strong>Descripción:</strong></label><br>
+        <textarea [(ngModel)]="nuevoCurso.descripcion" name="descripcion" placeholder="Descripción" ></textarea><br><br>
+        
+        <input type="submit" value="Enviar" /><br><br>
+    </form>
+</section>
