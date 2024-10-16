@@ -1,0 +1,25 @@
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+}
+
+.piePagina {
+    list-style: none;
+    padding: 0;
+}
+
+.piePagina li {
+    display: inline;
+    margin: 0 10px;
+}
+
+.piePagina li a {
+    color: white;
+    text-decoration: none;
+}
+
+.piePagina li a:hover {
+    text-decoration: underline;
+}
