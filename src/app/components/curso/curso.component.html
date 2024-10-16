@@ -1,0 +1,25 @@
+
+<article id="contenido">
+    <input type="text" id="buscarCursos" [(ngModel)]="filtro" (input)="buscarCursos()" placeholder="Buscar cursos" />
+    <h2>Lista de Cursos</h2>
+      
+      <div id="listaCursos">
+        <div *ngFor="let curso of cursos; let i = index">
+          <h3>{{ curso.nombreCurso }}</h3>
+          <p><strong>Instructor:</strong> {{ curso.nombreInstructor }}</p>
+          <p><strong>Fecha de Inicio:</strong> {{ curso.fechaInicio }}</p>
+          <p><strong>Duración:</strong> {{ curso.duracion }}</p>
+          <button class="btnDetalles" (click)="toggleDetalles(i)" id="btnDetalles-{{ i }}">Ver más detalles</button>
+          <button class="btnEditar" (click)="editarCurso(i)">Editar</button>
+          <button class="btnEliminar" (click)="eliminarCurso(i)">Eliminar</button>
+          <div id="detalles-{{ i }}" class="detalles" style="display: none;">
+            <p><strong>Descripción:</strong> {{ curso.descripcion }}</p>
+          </div>
+          <hr />
+        </div>
+        <p *ngIf="cursos.length === 0">No se encontraron cursos.</p>
+      </div>
+      
+      
+      
+</article>

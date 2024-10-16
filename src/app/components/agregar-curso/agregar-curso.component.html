@@ -1,0 +1,21 @@
+<section id="agregarCursos">
+    <h2>Agregar Curso</h2>
+    <form (ngSubmit)="enviarFormulario($event)" autocomplete="off">
+        <label for="cname"><strong>Nombre curso: </strong></label><br>
+        <input type="text" [(ngModel)]="nuevoCurso.nombreCurso" name="cname" placeholder="Nombre del Curso" /><br>
+        
+        <label for="iname"><strong>Nombre del instructor: </strong></label><br>
+        <input type="text" [(ngModel)]="nuevoCurso.nombreInstructor" name="iname" placeholder="Nombre del Instructor"  /><br>
+        
+        <label for="fecha"><strong>Fecha de inicio: </strong></label><br>
+        <input type="date" [(ngModel)]="nuevoCurso.fechaInicio" name="fecha"  /><br>
+        
+        <label for="duracion"><strong>Duración: </strong></label><br>
+        <input type="text" [(ngModel)]="nuevoCurso.duracion" name="duracion" placeholder="Duración tiene que especificar si son meses o años"  /><br>
+        
+        <label for="descripcion"><strong>Descripción:</strong></label><br>
+        <textarea [(ngModel)]="nuevoCurso.descripcion" name="descripcion" placeholder="Descripción" ></textarea><br><br>
+        
+        <button class="btnEnviar" (click)="enviarFormulario($event)"> Enviar</button>
+    </form>
+</section>
