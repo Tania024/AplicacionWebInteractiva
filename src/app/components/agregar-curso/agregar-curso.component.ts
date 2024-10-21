@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Curso } from '../../domain/Curso';
 import { ActivatedRoute, Router } from '@angular/router'; 
+import { CursosService } from '../../servicio/cursos.service';
 
 @Component({
   selector: 'app-agregar-curso',
@@ -25,13 +26,13 @@ export class AgregarCursoComponent implements OnInit {
     imagen: ''
   };
 
-  constructor(private route: ActivatedRoute, private router: Router) {} 
+  constructor(private route: ActivatedRoute, private router: Router, private cursosService: CursosService) {} 
 
   ngOnInit() {
     const cursoIndex = this.route.snapshot.queryParamMap.get('index'); // <-- Obtener el índice de la ruta (si existe)
     if (cursoIndex !== null) {
-      const cursosGuardados: Curso[] = JSON.parse(localStorage.getItem('cursos') || '[]');
       this.cursoEditadoIndex = +cursoIndex; // <-- Convertir índice a número
+      const cursosGuardados: Curso[] = this.cursosService.obtenerCursos();
       this.nuevoCurso = { ...cursosGuardados[this.cursoEditadoIndex] }; // <-- Cargar datos del curso a editar
     }
     this.cargarCursos();
@@ -49,11 +50,7 @@ export class AgregarCursoComponent implements OnInit {
   }
 
   cargarCursos(filtro: string = '') {
-    const cursosGuardados: Curso[] = JSON.parse(localStorage.getItem('cursos') || '[]');
-    this.cursos = cursosGuardados.filter((curso: Curso) =>
-      curso.nombreCurso.toLowerCase().includes(filtro.toLowerCase()) ||
-      curso.nombreInstructor.toLowerCase().includes(filtro.toLowerCase())
-    );
+    this.cursos = this.cursosService.buscarCursos(filtro);
   }
 
   buscarCursos() {
@@ -78,14 +75,7 @@ export class AgregarCursoComponent implements OnInit {
       return;
     }
 
-    const cursos = JSON.parse(localStorage.getItem("cursos") || '[]');
-    if (this.cursoEditadoIndex !== null) {
-      cursos[this.cursoEditadoIndex] = this.nuevoCurso; // <-- Actualizar si es edición
-    } else {
-      cursos.push(this.nuevoCurso); // <-- Agregar si es un nuevo curso
-    }
-
-    localStorage.setItem('cursos', JSON.stringify(cursos));
+    this.cursosService.guardarCurso(this.nuevoCurso, this.cursoEditadoIndex);
     alert('¡Formulario enviado correctamente!');
 
     // Limpiar el formulario
