@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Curso } from '../../domain/Curso';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AgregarCursoComponent } from '../agregar-curso/agregar-curso.component';
+import { Router } from '@angular/router'; // <-- Importar Router para navegar
 
 @Component({
   selector: 'app-curso',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, AgregarCursoComponent],
   templateUrl: './curso.component.html',
   styleUrl: './curso.component.scss'
 })
@@ -19,8 +21,11 @@ export class CursoComponent implements OnInit{
     nombreInstructor: '',
     fechaInicio: '',
     duracion: '',
-    descripcion: ''
+    descripcion: '',
+    imagen: ''
   };
+
+  constructor(private router: Router) {} // <-- Agregar Router para redirigir
 
   ngOnInit() {
     this.cargarCursos();
@@ -62,10 +67,7 @@ export class CursoComponent implements OnInit{
   }
 
   editarCurso(index: number) {
-    this.cursoEditadoIndex = index;
-    const curso = this.cursos[index];
-    this.nuevoCurso = { ...curso };
-    window.scrollTo(0, document.getElementById("agregarCursos")?.offsetTop || 0);
-  }
+    this.router.navigate(['AgregarCursos'], { queryParams: { index } });
+  }  
 
 }

@@ -14,7 +14,9 @@
           <button class="btnEliminar" (click)="eliminarCurso(i)">Eliminar</button>
           <div id="detalles-{{ i }}" class="detalles" style="display: none;">
             <p><strong>Descripción:</strong> {{ curso.descripcion }}</p>
+            <img [src]="curso.imagen" alt="Imagen del curso" *ngIf="curso.imagen">
           </div>
+          
           <hr />
         </div>
         <p *ngIf="cursos.length === 0">No se encontraron cursos.</p>

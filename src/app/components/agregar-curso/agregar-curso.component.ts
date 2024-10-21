@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Curso } from '../../domain/Curso';
+import { ActivatedRoute, Router } from '@angular/router'; 
 
 @Component({
   selector: 'app-agregar-curso',
@@ -14,16 +15,37 @@ export class AgregarCursoComponent implements OnInit {
   cursos: Curso[] = [];
   filtro: string = '';
   cursoEditadoIndex: number | null = null;
+  selectedFile: File | null = null;
   nuevoCurso: Curso = {
     nombreCurso: '',
     nombreInstructor: '',
     fechaInicio: '',
     duracion: '',
-    descripcion: ''
+    descripcion: '',
+    imagen: ''
   };
 
+  constructor(private route: ActivatedRoute, private router: Router) {} 
+
   ngOnInit() {
+    const cursoIndex = this.route.snapshot.queryParamMap.get('index'); // <-- Obtener el índice de la ruta (si existe)
+    if (cursoIndex !== null) {
+      const cursosGuardados: Curso[] = JSON.parse(localStorage.getItem('cursos') || '[]');
+      this.cursoEditadoIndex = +cursoIndex; // <-- Convertir índice a número
+      this.nuevoCurso = { ...cursosGuardados[this.cursoEditadoIndex] }; // <-- Cargar datos del curso a editar
+    }
     this.cargarCursos();
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+    if (this.selectedFile) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.nuevoCurso.imagen = e.target.result;  // Guardar imagen en base64
+      };
+      reader.readAsDataURL(this.selectedFile);  // Convertir a base64
+    }
   }
 
   cargarCursos(filtro: string = '') {
@@ -44,8 +66,8 @@ export class AgregarCursoComponent implements OnInit {
       
 
     // Validar campos
-    const { nombreCurso, nombreInstructor, fechaInicio, duracion, descripcion } = this.nuevoCurso;
-    if (!nombreCurso || !nombreInstructor || !fechaInicio || !duracion || !descripcion) {
+    const { nombreCurso, nombreInstructor, fechaInicio, duracion, descripcion, imagen } = this.nuevoCurso;
+    if (!nombreCurso || !nombreInstructor || !fechaInicio || !duracion || !descripcion || !imagen) {
       alert("Por favor, completa todos los campos.");
       return;
     }
@@ -58,10 +80,9 @@ export class AgregarCursoComponent implements OnInit {
 
     const cursos = JSON.parse(localStorage.getItem("cursos") || '[]');
     if (this.cursoEditadoIndex !== null) {
-      cursos[this.cursoEditadoIndex] = this.nuevoCurso; // Editar
-      this.cursoEditadoIndex = null; // Resetear
+      cursos[this.cursoEditadoIndex] = this.nuevoCurso; // <-- Actualizar si es edición
     } else {
-      cursos.push(this.nuevoCurso); // Agregar
+      cursos.push(this.nuevoCurso); // <-- Agregar si es un nuevo curso
     }
 
     localStorage.setItem('cursos', JSON.stringify(cursos));
@@ -73,9 +94,11 @@ export class AgregarCursoComponent implements OnInit {
       nombreInstructor: '',
       fechaInicio: '',
       duracion: '',
-      descripcion: ''
+      descripcion: '',
+      imagen: ''
     };
-
+    this.selectedFile = null;
+    this.router.navigate(['Curso']); // <-- Redirigir a la lista de cursos después de guardar
     this.cargarCursos();
   }
 

@@ -16,6 +16,9 @@
         <label for="descripcion"><strong>Descripción:</strong></label><br>
         <textarea [(ngModel)]="nuevoCurso.descripcion" name="descripcion" placeholder="Descripción" ></textarea><br><br>
         
+        <label for="imagen"><strong>Imagen del curso:</strong></label><br>
+        <input type="file" (change)="onFileSelected($event)" name="imagen" accept="image/*" /><br><br>
+        
         <button class="btnEnviar" (click)="enviarFormulario($event)"> Enviar</button>
     </form>
 </section>

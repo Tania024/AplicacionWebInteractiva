@@ -4,4 +4,5 @@ export interface Curso {
     fechaInicio: string;
     duracion: string;
     descripcion: string;
+    imagen: ''
   }
